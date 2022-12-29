@@ -21,8 +21,8 @@ Supports local and distributed workloads.
 Run the profiler:
 
 ```bash
-npx shumai-profiler
-# OR npm i shumai-profiler -g && shumaip
+npx shumai-profiler --host
+# OR npm i shumai-profiler -g && shumaip --host
 ```
 
 Update your [shumai](https://github.com/facebookresearch/shumai) app
