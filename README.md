@@ -1,8 +1,9 @@
 # shumai-profiler
 
-An interative profiler for [shumai](https://github.com/facebookresearch/shumai).
+An interactive profiler for [shumai](https://github.com/facebookresearch/shumai).
+Supports local and distributed workloads.
 
-![NPM](./docs/preview.gif)
+![Preview](./docs/preview.gif)
 
 
 ## Use cases

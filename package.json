@@ -1,13 +1,15 @@
 {
   "name": "shumai-profiler",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "An interactive profiler for Shumai",
   "scripts": {
     "dev": "solid-start dev --host",
     "build": "solid-start build",
     "start": "node ./ --host"
   },
   "type": "module",
-  "main": "dist/server.js",
+  "main": "./dist/server.js",
+  "module": "./dist/server.js",
   "devDependencies": {
     "@solidjs/meta": "^0.28.0",
     "@solidjs/router": "^0.5.0",
@@ -19,13 +21,14 @@
     "typescript": "^4.8.4"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "bin": {
-    "shumai-profiler": "./dist/server.js",
-    "shumaip": "./dist/server.js"
+    "shumai-profiler": "./bin/shumai-profiler.js",
+    "shumaip": "./bin/shumai-profiler.js"
   },
   "files": [
+    "bin",
     "dist",
     "public",
     "docs",
