@@ -20,7 +20,7 @@ export const Graph = (props: GraphOptions) => {
   const id = createUniqueId();
 
   const { graph } = props;
-  const { groupBy } = graph;
+  const { groupBy, filter } = graph;
 
   const isStackedDefault = graph.options?.scales?.y?.stacked;
 
@@ -31,6 +31,9 @@ export const Graph = (props: GraphOptions) => {
   createEffect(() => {
     const isByOp = groupBy === 'op';
     const buckets = reduceStatsBy(props.buckets, groupBy);
+    if (filter) {
+      buckets.forEach(b => b.stats = b.stats.filter(filter));
+    }
     const groups: string[] = [...buckets.reduce((acc, b) => {
       b.stats.forEach(s => {
         if (isByOp) {

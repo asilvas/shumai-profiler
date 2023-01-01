@@ -13,8 +13,11 @@ export type GraphData = {
   type: string
   options: any
   groupBy: string
+  filter?: (stat: StatsSummary) => boolean
   processor: GraphProcessor
 }
+
+const MACC_OPS = new Set(['matmul', 'conv2d']);
 
 export const graphs: GraphData[] = [
   {
@@ -60,6 +63,31 @@ export const graphs: GraphData[] = [
       }
     },
     groupBy: 'op',
+    filter: (stat: StatsSummary) => !MACC_OPS.has(stat.entriesByOp?.[0]?.[0]),
+    processor: (stat: StatsSummary, { groupId, bucketTime }) => (stat.entriesByOp.find(([k]) => k === groupId)?.[1].gflops || 0)/bucketTime*1e3,
+  },
+  {
+    title: 'Throughput by MACC Operation',
+    type: 'line',
+    options: {
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'second'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'GFLOPS/sec',
+          },
+          stacked: true,
+        }
+      }
+    },
+    groupBy: 'op',
+    filter: (stat: StatsSummary) => MACC_OPS.has(stat.entriesByOp?.[0]?.[0]),
     processor: (stat: StatsSummary, { groupId, bucketTime }) => (stat.entriesByOp.find(([k]) => k === groupId)?.[1].gflops || 0)/bucketTime*1e3,
   },
   {
