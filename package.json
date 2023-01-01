@@ -27,6 +27,7 @@
     "shumai-profiler": "./bin/shumai-profiler.js",
     "shumaip": "./bin/shumai-profiler.js"
   },
+  "license": "MIT",
   "files": [
     "bin",
     "dist",
