@@ -43,6 +43,28 @@ export const graphs: GraphData[] = [
     processor: (stat: StatsSummary, { bucketTime }) => stat.totals.gflops/bucketTime*1e3,
   },
   {
+    title: 'Throughput by Process/Device',
+    type: 'line',
+    options: {
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'second'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'GFLOPS/sec',
+          },
+        }
+      }
+    },
+    groupBy: 'id',
+    processor: (stat: StatsSummary, { bucketTime }) => stat.totals.gflops/bucketTime*1e3,
+  },
+  {
     title: 'Throughput by Operation',
     type: 'line',
     options: {
