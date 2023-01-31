@@ -26,6 +26,7 @@ export const graphs: GraphData[] = [
     options: {
       scales: {
         x: {
+          display: false,
           type: 'time',
           time: {
             unit: 'second'
@@ -48,6 +49,7 @@ export const graphs: GraphData[] = [
     options: {
       scales: {
         x: {
+          display: false,
           type: 'time',
           time: {
             unit: 'second'
@@ -70,6 +72,7 @@ export const graphs: GraphData[] = [
     options: {
       scales: {
         x: {
+          display: false,
           type: 'time',
           time: {
             unit: 'second'
@@ -94,6 +97,7 @@ export const graphs: GraphData[] = [
     options: {
       scales: {
         x: {
+          display: false,
           type: 'time',
           time: {
             unit: 'second'
@@ -118,6 +122,7 @@ export const graphs: GraphData[] = [
     options: {
       scales: {
         x: {
+          display: false,
           type: 'time',
           time: {
             unit: 'second'
@@ -156,6 +161,7 @@ export const graphs: GraphData[] = [
     options: {
       scales: {
         x: {
+          display: false,
           type: 'time',
           time: {
             unit: 'second'

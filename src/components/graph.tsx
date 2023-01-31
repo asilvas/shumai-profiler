@@ -27,6 +27,7 @@ export const Graph = (props: GraphOptions) => {
   let chart, chartRef;
 
   const [options, setOptions] = createSignal({ ...GraphDefaultOptions, ...graph.options });
+  const [colWidth, setColWidth] = createSignal(6);
 
   createEffect(() => {
     const isByOp = groupBy === 'op';
@@ -103,15 +104,29 @@ export const Graph = (props: GraphOptions) => {
     chart.update()
   };
 
-  const optionsUI = (<div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" checked={isStackedDefault} id={`checkStacked${id}`} onClick={onClickChecked} />
-    <label class="form-check-label" for={`checkStacked${id}`}>
-      Stacked
-    </label>
+  const onClickLarge = (e: Event) => {
+    let w = colWidth();
+    w = w === 6 ? 12 : 6; // toggle for now
+    setColWidth(w);
+  };
+
+  const optionsUI = (<div class="row">
+    <div class="form-check col-sm-1">
+      <input class="form-check-input" type="checkbox" value="" checked={isStackedDefault} id={`checkStacked${id}`} onClick={onClickChecked} />
+      <label class="form-check-label" for={`checkStacked${id}`}>
+        Stacked
+      </label>
+    </div>
+    <div class="form-check col-sm-1">
+      <input class="form-check-input" type="checkbox" value="" checked={false} id={`checkLarge${id}`} onClick={onClickLarge} />
+      <label class="form-check-label" for={`checkLarge${id}`}>
+        Full&nbsp;Width
+      </label>
+    </div>
   </div>);
 
   return (
-    <div class="col-sm-6">
+    <div class={`col-sm-${colWidth()}`}>
       <Accordion defaultActiveKey="0">
         <Accordion.Item eventKey="0">
           <Accordion.Header><h2>{graph.title}</h2></Accordion.Header>
