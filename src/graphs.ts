@@ -44,7 +44,7 @@ export const graphs: GraphData[] = [
     processor: (stat: StatsSummary, { bucketTime }) => stat.totals.gflops/bucketTime*1e3,
   },
   {
-    title: 'Throughput by Process/Device',
+    title: 'Throughput by Host/Device',
     type: 'line',
     options: {
       scales: {
@@ -63,7 +63,7 @@ export const graphs: GraphData[] = [
         }
       }
     },
-    groupBy: 'id',
+    groupBy: 'hostDevice',
     processor: (stat: StatsSummary, { bucketTime }) => stat.totals.gflops/bucketTime*1e3,
   },
   {
@@ -140,22 +140,6 @@ export const graphs: GraphData[] = [
     processor: (stat: StatsSummary, { bucketTime }) => stat.utilization*100,
   },
   {
-    title: 'Volume by Operation',
-    type: 'bar',
-    options: {
-      scales: {
-        y: {
-          title: {
-            display: true,
-            text: 'Count',
-          },
-        }  
-      }
-    },
-    groupBy: 'op',
-    processor: (stat: StatsSummary, { groupId, bucketTime }) => (stat.entriesByOp.find(([k]) => k === groupId)?.[1].count || 0),
-  },
-  {
     title: 'Memory Usage by Host',
     type: 'line',
     options: {
@@ -179,6 +163,22 @@ export const graphs: GraphData[] = [
     processor: (stat: StatsSummary) => Number(stat.totals.bytes ? stat.totals.bytes/stat.totals.count / 1e6 : 0).toFixed(1),
   },
   {
+    title: 'Volume by Operation',
+    type: 'bar',
+    options: {
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: 'Count',
+          },
+        }  
+      }
+    },
+    groupBy: 'op',
+    processor: (stat: StatsSummary, { groupId, bucketTime }) => (stat.entriesByOp.find(([k]) => k === groupId)?.[1].count || 0),
+  },
+  {
     title: 'Time per 1000 Ops',
     type: 'bar',
     options: {
@@ -196,6 +196,26 @@ export const graphs: GraphData[] = [
       const entry = stat.entriesByOp.find(([k]) => k === groupId);
       if (!entry) return 0;
       return entry[1].time / entry[1].count;
+    }
+  },
+  {
+    title: 'Time per Operation',
+    type: 'bar',
+    options: {
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: 'ms',
+          },
+        }  
+      }
+    },
+    groupBy: 'op',
+    processor: (stat: StatsSummary, { groupId, bucketTime }) => {
+      const entry = stat.entriesByOp.find(([k]) => k === groupId);
+      if (!entry) return 0;
+      return entry[1].time;
     }
   },
 ]

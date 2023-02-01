@@ -27,6 +27,7 @@ function expireOldStats(stats: StatsSummary[]) {
 
 export function flattenStats(stats: StatsSummary[]): StatsSummary[] {
   return stats.reduce((acc, s) => {
+    s.hostDevice = `${s.hostId}:${s.deviceId}`;
     acc.push(s);
     acc = acc.concat(flattenStats(s.remoteStats));
     return acc;

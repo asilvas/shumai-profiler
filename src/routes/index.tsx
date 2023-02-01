@@ -26,6 +26,7 @@ const App = () => {
   const id = createUniqueId();
   const statsReader = useRouteData<typeof routeData>();
   const [isRunning, setIsRunning] = createSignal(true);
+  const [colWidth, setColWidth] = createSignal(6);
   const [bucketTime, setBucketTime] = createSignal(DEFAULT_BUCKET_TIME);
   let b = []  
   const stats = statsReader();
@@ -58,6 +59,23 @@ const App = () => {
     }
   })
 
+  const onClickResize = () => {
+    let w = colWidth();
+    switch (w) {
+      case 4:
+        w = 6;
+        break;
+      case 6:
+        w = 12;
+        break;
+      case 12:
+      default:
+        w = 4;
+        break;
+    }
+    setColWidth(w);
+  };
+
   const onClickReset = () => {
     setBuckets([]);
   };
@@ -70,13 +88,15 @@ const App = () => {
     <section class="container-fluid">
       <header class="header fixed-top bg-info bg-gradient bg-opacity-75">
         <div class="row px-3">
-          <div class="col-11">
+          <div class="col-10">
             <h1>shumai-profiler</h1>
           </div>
-          <div class="col-1 text-end">
-            <input type="checkbox" class="btn-check" id={`reset-${id}`} autocomplete="off" onClick={onClickReset} />
+          <div class="col-2 text-end">
+            <input type="checkbox" class="btn-check" id={`size-${id}`} autocomplete="off" onClick={onClickResize} title="Expand/Contrast Graphs" />
+            <label class="btn btn-primary mt-2 mx-1" for={`size-${id}`}><i class={colWidth() === 12 ? 'bi-arrows-angle-contract' : 'bi-arrows-angle-expand'}></i></label>
+            <input type="checkbox" class="btn-check" id={`reset-${id}`} autocomplete="off" onClick={onClickReset} title="Erase history" />
             <label class="btn btn-primary mt-2 mx-1" for={`reset-${id}`}><i class="bi-eraser-fill"></i></label>
-            <input type="checkbox" class="btn-check" id={`run-state-${id}`} autocomplete="off" onClick={toggleRunState} />
+            <input type="checkbox" class="btn-check" id={`run-state-${id}`} autocomplete="off" onClick={toggleRunState} title="Pause/Resume" />
             <label class="btn btn-primary mt-2 mx-1" for={`run-state-${id}`}><i class={isRunning() ? 'bi-pause-circle-fill' : 'bi-play-circle-fill'}></i></label>
           </div>
         </div>
@@ -84,7 +104,7 @@ const App = () => {
 
       <div class="row" style="padding-top:80px">
         <For each={graphs}>
-          {(graph) => (<Graph graph={graph} bucketTime={bucketTime()} buckets={buckets()} />)}
+          {(graph) => (<Graph graph={graph} bucketTime={bucketTime()} buckets={buckets()} colWidth={colWidth()} />)}
         </For>
       </div>
     </section>

@@ -10,6 +10,7 @@ export type StatsSummary = {
   hostId: string
   processId: string
   deviceId: string
+  hostDevice: string
   bytesUsed: number
   utilization: number
   startTime: number
