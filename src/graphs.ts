@@ -117,7 +117,7 @@ export const graphs: GraphData[] = [
     processor: (stat: StatsSummary, { groupId, bucketTime }) => (stat.entriesByOp.find(([k]) => k === groupId)?.[1].gflops || 0)/bucketTime*1e3,
   },
   {
-    title: 'Utilization by Host',
+    title: 'Utilization by Host/Device',
     type: 'line',
     options: {
       scales: {
@@ -136,11 +136,11 @@ export const graphs: GraphData[] = [
         }
       }
     },
-    groupBy: 'hostId',
+    groupBy: 'hostDevice',
     processor: (stat: StatsSummary, { bucketTime }) => stat.utilization*100,
   },
   {
-    title: 'Memory Usage by Host',
+    title: 'Memory Usage by Host/Device',
     type: 'line',
     options: {
       scales: {
@@ -154,18 +154,22 @@ export const graphs: GraphData[] = [
         y: {
           title: {
             display: true,
-            text: 'MB',
+            text: 'KB',
           },
         }
       }
     },
-    groupBy: 'hostId',
-    processor: (stat: StatsSummary) => Number(stat.totals.bytes ? stat.totals.bytes/stat.totals.count / 1e6 : 0).toFixed(1),
+    groupBy: 'hostDevice',
+    processor: (stat: StatsSummary) => Number(stat.totals.bytes ? stat.totals.bytes/stat.totals.count / 1e3 : 0).toFixed(1),
   },
   {
     title: 'Volume by Operation',
     type: 'bar',
     options: {
+      responsive: true,
+      plugins: {
+        legend: false,
+      },
       scales: {
         y: {
           title: {
@@ -182,6 +186,10 @@ export const graphs: GraphData[] = [
     title: 'Time per 1000 Ops',
     type: 'bar',
     options: {
+      responsive: true,
+      plugins: {
+        legend: false,
+      },
       scales: {
         y: {
           title: {
@@ -202,6 +210,10 @@ export const graphs: GraphData[] = [
     title: 'Time per Operation',
     type: 'bar',
     options: {
+      responsive: true,
+      plugins: {
+        legend: false,
+      },
       scales: {
         y: {
           title: {

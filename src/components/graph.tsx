@@ -47,7 +47,7 @@ export const Graph = (props: GraphOptions) => {
       });
       return acc;
     }, new Set<string>())].sort();
-    const labels = graph.type === 'line' ? buckets.map(b => new Date(b.startTime)) : [groupBy];
+    const labels = graph.type === 'line' ? buckets.map(b => new Date(b.startTime)) : groups;
     const datasets = graph.type === 'line' ? groups.map(label => {
       return {
         label,
@@ -60,18 +60,16 @@ export const Graph = (props: GraphOptions) => {
           return graph.processor(groupStat, { groupId: label, bucketTime: props.bucketTime });
         }),
       };
-    }) : groups.map(label => {
-      return {
-        label,
-        data: [buckets.reduce((acc, bucket) => {
+    }) : [{
+      data: groups.map(label => {
+        return buckets.reduce((acc, bucket) => {
           const groupStat = isByOp ? bucket.stats.find(s => s.entriesByOp?.[0][0] === label) : bucket.stats.find(s => s[groupBy] === label);
-          if (!groupStat) return void 0;
+          if (!groupStat) return acc;
   
           // fetch computed stat
           return acc + graph.processor(groupStat, { groupId: label, bucketTime: props.bucketTime });
-        }, 0)]
-      };
-    });
+        }, 0)})
+    }]
     const data = {
       labels,
       datasets
