@@ -163,6 +163,57 @@ export const graphs: GraphData[] = [
     processor: (stat: StatsSummary) => Number(stat.totals.bytes ? stat.totals.bytes/stat.totals.count / 1e3 : 0).toFixed(1),
   },
   {
+    title: 'Operation Rate/s',
+    type: 'line',
+    options: {
+      responsive: true,
+      plugins: {
+        legend: true,
+      },
+      scales: {
+        x: {
+          display: false,
+          type: 'time',
+          time: {
+            unit: 'second'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Count',
+          },
+          stacked: true,
+        }  
+      }
+    },
+    groupBy: 'op',
+    processor: (stat: StatsSummary, { groupId, bucketTime }) => (stat.entriesByOp.find(([k]) => k === groupId)?.[1].count || 0) / bucketTime * 1e3,
+  },
+  {
+    title: 'Avg Flops per Operation by Host/Device',
+    type: 'line',
+    options: {
+      scales: {
+        x: {
+          display: false,
+          type: 'time',
+          time: {
+            unit: 'second'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'FLOPS/op/sec',
+          },
+        }
+      }
+    },
+    groupBy: 'hostDevice',
+    processor: (stat: StatsSummary, { bucketTime }) => (stat.totals.gflops / stat.totals.count) * 1e6,
+  },
+  {
     title: 'Volume by Operation',
     type: 'bar',
     options: {
