@@ -154,13 +154,13 @@ export const graphs: GraphData[] = [
         y: {
           title: {
             display: true,
-            text: 'KB',
+            text: 'MB',
           },
         }
       }
     },
     groupBy: 'hostDevice',
-    processor: (stat: StatsSummary) => Number(stat.totals.bytes ? stat.totals.bytes/stat.totals.count / 1e3 : 0).toFixed(1),
+    processor: (stat: StatsSummary) => Number(stat.bytesUsed / 1e6).toFixed(2),
   },
   {
     title: 'Operation Rate/s',
